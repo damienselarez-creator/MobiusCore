@@ -6,6 +6,7 @@
 #ifndef _REALMLIST_H
 #define _REALMLIST_H
 
+#include <boost/asio/ip/tcp.hpp>
 #include "Define.h"
 #include "Realm.h"
 #include <array>
@@ -105,7 +106,7 @@ private:
     std::unordered_set<std::string> _subRegions;
     uint32 _updateInterval;
     std::unique_ptr<Server::Asio::DeadlineTimer> _updateTimer;
-    std::unique_ptr<boost::asio::ip::tcp_resolver> _resolver;
+    std::unique_ptr<boost::asio::ip::tcp::resolver> _resolver;
 };
 
 #define sRealmList RealmList::Instance()

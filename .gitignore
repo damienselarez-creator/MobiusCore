@@ -22,3 +22,6 @@ nbproject/*
 .vscode
 cmake-build-*/
 .vs
+
+# Local backups
+/_backups/

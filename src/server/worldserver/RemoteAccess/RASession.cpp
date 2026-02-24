@@ -3,6 +3,8 @@
  * See AUTHORS file for copyright information.
  */
 
+#include <thread>
+#include <chrono>
 #include "RASession.h"
 #include "AccountMgr.h"
 #include "Config.h"

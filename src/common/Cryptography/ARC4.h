@@ -7,6 +7,7 @@
 #define _AUTH_SARC4_H
 
 #include "Define.h"
+#include <openssl/crypto.h>
 #include <openssl/evp.h>
 
 class COMMON_API ARC4

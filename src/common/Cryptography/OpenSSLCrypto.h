@@ -3,8 +3,8 @@
  * See AUTHORS file for copyright information.
  */
 
-#ifndef OPENSSL_CRYPTO_H
-#define OPENSSL_CRYPTO_H
+#ifndef MOBIUS_OPENSSLCRYPTO_H
+#define MOBIUS_OPENSSLCRYPTO_H
 
 #include "Define.h"
 

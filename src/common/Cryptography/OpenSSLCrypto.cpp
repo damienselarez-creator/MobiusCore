@@ -5,10 +5,13 @@
 
 #include <OpenSSLCrypto.h>
 #include <openssl/crypto.h>
+#include <openssl/opensslv.h>
 #include <vector>
 #include <thread>
 #include <mutex>
+#include <cstring>
 
+#if OPENSSL_VERSION_NUMBER < 0x10100000L
 std::vector<std::mutex*> cryptoLocks;
 void ValgrindRandomSetup();
 
@@ -55,6 +58,24 @@ void OpenSSLCrypto::threadsCleanup()
     }
     cryptoLocks.resize(0);
 }
+
+#else
+
+void OpenSSLCrypto::threadsSetup()
+{
+#ifdef VALGRIND
+    ValgrindRandomSetup();
+#endif
+    // OpenSSL >= 1.1: thread-safety interne, rien à configurer.
+}
+
+void OpenSSLCrypto::threadsCleanup()
+{
+    // rien à faire
+}
+
+#endif
+
 
 #ifdef VALGRIND
 #include <openssl/rand.h>

@@ -16,6 +16,11 @@ list(APPEND PRIVATE_SOURCES
   ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.cpp
   ${CMAKE_CURRENT_SOURCE_DIR}/Debugging/Errors.h)
 
+# Manually add EVP digest wrapper (explicitly tracked by CMake)
+list(APPEND PRIVATE_SOURCES
+  ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography/Digest.cpp
+  ${CMAKE_CURRENT_SOURCE_DIR}/Cryptography/Digest.h)
+
 if (USE_COREPCH)
   set(PRIVATE_PCH_HEADER PrecompiledHeaders/commonPCH.h)
 endif (USE_COREPCH)

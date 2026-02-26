@@ -2,7 +2,7 @@
 # See AUTHORS file for copyright information.
 
 # We require CMake >= 3.2
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.10)
 
 # add this options before PROJECT keyword
 set(CMAKE_DISABLE_SOURCE_CHANGES ON)
@@ -12,9 +12,9 @@ set(CMAKE_DISABLE_IN_SOURCE_BUILD ON)
 project(MobiusCore)
 
 # CMake policies (can not be handled elsewhere)
-cmake_policy(SET CMP0005 OLD)
+cmake_policy(SET CMP0005 NEW)
 if(POLICY CMP0043)
-  cmake_policy(SET CMP0043 OLD) # Disable 'Ignore COMPILE_DEFINITIONS_<Config> properties'
+  cmake_policy(SET CMP0043 NEW) # Disable 'Ignore COMPILE_DEFINITIONS_<Config> properties'
 endif()
 
 if(POLICY CMP0054)

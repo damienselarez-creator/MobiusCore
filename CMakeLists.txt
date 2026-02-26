@@ -21,6 +21,11 @@ if(POLICY CMP0054)
   cmake_policy(SET CMP0054 NEW) # Only interpret if() arguments as variables or keywords when unquoted - prevents intepreting if (SOME_STRING_VARIABLE MATCHES "MSVC") as if (SOME_STRING_VARIABLE MATCHES "1")
 endif()
 
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW) # FindBoost removed; prefer BoostConfig.cmake
+endif()
+
+
 # Set RPATH-handing (CMake parameters)
 set(CMAKE_SKIP_BUILD_RPATH 0)
 set(CMAKE_BUILD_WITH_INSTALL_RPATH 0)

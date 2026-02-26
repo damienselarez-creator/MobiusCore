@@ -32,14 +32,17 @@ if(__COTIRE_INCLUDED)
 endif()
 set(__COTIRE_INCLUDED TRUE)
 
+
 # call cmake_minimum_required, but prevent modification of the CMake policy stack in include mode
 # cmake_minimum_required also sets the policy version as a side effect, which we have to avoid
 if (NOT CMAKE_SCRIPT_MODE_FILE)
 	cmake_policy(PUSH)
 endif()
-# (patched) cmake_minimum_required disabled to avoid CMake <3.10 deprecation warningif (NOT CMAKE_SCRIPT_MODE_FILE)
+cmake_minimum_required(VERSION 3.10)
+if (NOT CMAKE_SCRIPT_MODE_FILE)
 	cmake_policy(POP)
 endif()
+
 
 set (COTIRE_CMAKE_MODULE_FILE "${CMAKE_CURRENT_LIST_FILE}")
 set (COTIRE_CMAKE_MODULE_VERSION "1.7.10")

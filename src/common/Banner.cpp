@@ -7,7 +7,7 @@
 #include "GitRevision.h"
 #include "StringFormat.h"
 
-void Server::Banner::Show(char const* applicationName, void(*log)(char const* text), void(*logExtraInfo)())
+void Server::Banner::Show(char const* /*applicationName*/, void(*log)(char const* text), void(*logExtraInfo)())
 {
     log(" <Ctrl-C> to stop.\n");
     log(" ##     ##  #######  ########  #### ##     ##  ######      ######   #######  ########  ########");

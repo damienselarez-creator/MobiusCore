@@ -641,7 +641,7 @@ Unit* PlayerAI::SelectAttackTarget() const
     return me->GetCharmer() ? me->GetCharmer()->GetVictim() : nullptr;
 }
 
-struct UncontrolledTargetSelectPredicate : public std::unary_function<Unit*, bool>
+struct UncontrolledTargetSelectPredicate 
 {
     bool operator()(Unit const* target) const
     {

@@ -4,8 +4,22 @@
  */
 
 #include "Define.h"
+
+#if defined(__clang__)
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
 #include <openssl/objects.h>
 #include <openssl/rsa.h>
+
+#if defined(__clang__)
+#  pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#  pragma GCC diagnostic pop
+#endif
 #include <string>
 #include <type_traits>
 
@@ -36,7 +50,19 @@ public:
     template <typename KeyTag>
     bool LoadFromString(std::string const& keyPem, KeyTag);
 
+    #if defined(__clang__)
+#  pragma clang diagnostic push
+#  pragma clang diagnostic ignored "-Wdeprecated-declarations"
+#elif defined(__GNUC__)
+#  pragma GCC diagnostic push
+#  pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+#endif
     uint32 GetOutputSize() const { return uint32(RSA_size(_rsa)); }
+#if defined(__clang__)
+#  pragma clang diagnostic pop
+#elif defined(__GNUC__)
+#  pragma GCC diagnostic pop
+#endif
     BigNumber GetModulus() const;
 
     template <typename KeyTag, typename PaddingTag>

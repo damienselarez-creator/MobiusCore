@@ -50,7 +50,7 @@ else()
     string(TIMESTAMP rev_date "%Y-%m-%d")
     set(rev_hash "MobiusCore")
     set(rev_branch "Legion")
-    message(STATUS "
+    message(VERBOSE "
     Could not find a proper repository signature (hash) - you may need to pull tags with git fetch -t
     Continuing anyway - note that the versionstring will be set to \"MobiusCore ${rev_date} (Legion)\"")
   else()

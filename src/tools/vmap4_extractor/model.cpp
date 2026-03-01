@@ -4,6 +4,10 @@
  */
 
 #include "vmapexport.h"
+
+#ifndef FOURCC
+#define FOURCC(a,b,c,d) ((uint32)(uint8)(a) | ((uint32)(uint8)(b) << 8) | ((uint32)(uint8)(c) << 16) | ((uint32)(uint8)(d) << 24))
+#endif
 #include "Errors.h"
 #include "model.h"
 #include "wmo.h"
@@ -38,7 +42,7 @@ bool Model::open()
 
     uint32 m2start = 0;
     char const* ptr = f.getBuffer();
-    while (m2start + 4 < f.getSize() && *reinterpret_cast<uint32 const*>(ptr) != '02DM')
+    while (m2start + 4 < f.getSize() && *reinterpret_cast<uint32 const*>(ptr) != FOURCC('0','2','D','M'))
     {
         ++m2start;
         ++ptr;

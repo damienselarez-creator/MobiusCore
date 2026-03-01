@@ -57,7 +57,7 @@ class spell_summon_troublemaker : public SpellScript
         Position pos = { 1181.75f, 3444.5f, 102.9385f, 3.285759f };
         int32 radius = urand(0, 4) == 0 ? 0 : urand(1, 7);
         float angle = M_PI + M_PI * (urand(0, 7) / 7.0f);
-        pos.RelocateOffset({ radius * sin(angle), radius * cos(angle), 0.0f, 0.0f });
+        pos.RelocateOffset({ float(radius * std::sinf(float(angle))), float(radius * std::cosf(float(angle))), 0.0f, 0.0f });
 
         if (TempSummon* summon = GetCaster()->GetMap()->SummonCreature(entry, pos, properties, duration, GetCaster()))
             summon->SetTempSummonType(TEMPSUMMON_CORPSE_TIMED_DESPAWN);

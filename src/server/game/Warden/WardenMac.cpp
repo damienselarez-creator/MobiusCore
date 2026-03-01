@@ -3,6 +3,9 @@
  * See AUTHORS file for copyright information.
  */
 
+#include <cstring>
+
+#include "Cryptography/Digest.h"
 #include "Cryptography/SessionKeyGeneration.h"
 #include "Common.h"
 #include "WorldPacket.h"
@@ -17,8 +20,6 @@
 #include "WardenMac.h"
 #include "WardenModuleMac.h"
 #include "SHA1.h"
-
-#include <openssl/md5.h>
 
 WardenMac::WardenMac() : Warden() { }
 
@@ -70,10 +71,12 @@ ClientWardenModule* WardenMac::GetModuleForClient()
     memcpy(mod->Key, Module_0DBBF209A27B1E279A9FEC5C168A15F7_Key, 16);
 
     // md5 hash
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, mod->CompressedData, len);
-    MD5_Final((uint8*)&mod->Id, &ctx);
+    auto md5 = Cryptography::Digest::MD5(
+        reinterpret_cast<std::uint8_t const*>(mod->CompressedData),
+        static_cast<std::size_t>(len));
+
+    static_assert(sizeof(mod->Id) == 16, "Warden module Id must be 16 bytes");
+    std::memcpy(&mod->Id, md5.data(), md5.size());
 
     return mod;
 }
@@ -237,23 +240,24 @@ void WardenMac::HandleData(ByteBuffer &buff)
     if (memcmp(sha1Hash, sha1.GetDigest(), 20) != 0)
     {
         LOG_DEBUG("warden", "Handle data failed: SHA1 hash is wrong!");
-        //found = true;
+        _session->KickPlayer();
+        return;
     }
 
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, str.c_str(), str.size());
-    uint8 ourMD5Hash[16];
-    MD5_Final(ourMD5Hash, &ctx);
+    // MD5 verification (OpenSSL-free)
+    auto ourMD5 = Cryptography::Digest::MD5(
+        reinterpret_cast<std::uint8_t const*>(str.data()),
+        static_cast<std::size_t>(str.size()));
 
-    uint8 theirsMD5Hash[16];
-    buff.read(theirsMD5Hash, 16);
+    std::uint8_t theirsMD5[16];
+    buff.read(theirsMD5, 16);
 
-    if (memcmp(ourMD5Hash, theirsMD5Hash, 16) != 0)
+    static_assert(ourMD5.size() == 16, "MD5 digest must be 16 bytes");
+    if (std::memcmp(ourMD5.data(), theirsMD5, 16) != 0)
     {
         LOG_DEBUG("warden", "Handle data failed: MD5 hash is wrong!");
-        //found = true;
+        _session->KickPlayer();
+        return;
     }
-
-    _session->KickPlayer();
 }
+

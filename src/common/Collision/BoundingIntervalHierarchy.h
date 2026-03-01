@@ -109,8 +109,8 @@ class COMMON_API BIH
         {
             float intervalMin = -1.f;
             float intervalMax = -1.f;
-            G3D::Vector3 org = r.origin();
-            G3D::Vector3 dir = r.direction();
+            G3D::Vector3 org; org = r.origin();
+            G3D::Vector3 dir; dir = r.direction();
             G3D::Vector3 invDir;
             for (int i=0; i<3; ++i)
             {

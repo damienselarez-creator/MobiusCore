@@ -4,6 +4,10 @@
  */
 
 #include "adtfile.h"
+
+#ifndef FOURCC
+#define FOURCC(a,b,c,d) ((uint32)(uint8)(a) | ((uint32)(uint8)(b) << 8) | ((uint32)(uint8)(c) << 16) | ((uint32)(uint8)(d) << 24))
+#endif
 #include "DB2CascFileSource.h"
 #include "Errors.h"
 #include "ExtractorDB2LoadInfo.h"
@@ -51,9 +55,9 @@ extern CASC::StorageHandle CascStorage;
 
 enum ModelTypes : uint32
 {
-    MODEL_MD20 = '02DM',
-    MODEL_MD21 = '12DM',
-    MODEL_WMO  = 'MVER'
+    MODEL_MD20 = FOURCC('0','2','D','M'),
+    MODEL_MD21 = FOURCC('1','2','D','M'),
+    MODEL_WMO  = FOURCC('M','V','E','R')
 };
 
 bool GetHeaderMagic(std::string const& fileName, uint32* magic)

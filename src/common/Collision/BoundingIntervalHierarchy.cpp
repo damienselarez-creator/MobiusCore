@@ -19,8 +19,11 @@ void BIH::buildHierarchy(std::vector<uint32> &tempTree, buildData &dat, BuildSta
     //tempTree.add(0);
 
     // seed bbox
-    AABound gridBox = { bounds.low(), bounds.high() };
-    AABound nodeBox = gridBox;
+    AABound gridBox;
+    gridBox.lo = bounds.low();
+    gridBox.hi = bounds.high();
+    AABound nodeBox;
+    nodeBox = gridBox;
     // seed subdivide function
     subdivide(0, dat.numPrims - 1, tempTree, dat, gridBox, nodeBox, 0, 1, stats);
 }
@@ -44,7 +47,8 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
         prevAxis = axis;
         prevSplit = split;
         // perform quick consistency checks
-        G3D::Vector3 d( gridBox.hi - gridBox.lo );
+        G3D::Vector3 d;
+        d = (gridBox.hi - gridBox.lo);
         if (d.x < 0 || d.y < 0 || d.z < 0)
             throw std::logic_error("negative node extents");
         for (int i = 0; i < 3; i++)
@@ -215,8 +219,14 @@ void BIH::subdivide(int left, int right, std::vector<uint32> &tempTree, buildDat
     tempTree[nodeIndex + 1] = floatToRawIntBits(clipL);
     tempTree[nodeIndex + 2] = floatToRawIntBits(clipR);
     // prepare L/R child boxes
-    AABound gridBoxL(gridBox), gridBoxR(gridBox);
-    AABound nodeBoxL(nodeBox), nodeBoxR(nodeBox);
+    AABound gridBoxL;
+    gridBoxL = gridBox;
+    AABound gridBoxR;
+    gridBoxR = gridBox;
+    AABound nodeBoxL;
+    nodeBoxL = nodeBox;
+    AABound nodeBoxR;
+    nodeBoxR = nodeBox;
     gridBoxL.hi[axis] = gridBoxR.lo[axis] = split;
     nodeBoxL.hi[axis] = clipL;
     nodeBoxR.lo[axis] = clipR;

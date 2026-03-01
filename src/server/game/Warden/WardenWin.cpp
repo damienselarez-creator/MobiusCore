@@ -3,6 +3,12 @@
  * See AUTHORS file for copyright information.
  */
 
+#include <cstring>
+
+#include <boost/thread/locks.hpp>
+#include <boost/thread/shared_mutex.hpp>
+
+#include "Cryptography/Digest.h"
 #include "Cryptography/HmacHash.h"
 #include "Cryptography/SessionKeyGeneration.h"
 #include "Common.h"
@@ -21,9 +27,6 @@
 #include "WardenCheckMgr.h"
 #include "SHA1.h"
 #include "Random.h"
-#include <boost/thread/locks.hpp>
-#include <boost/thread/shared_mutex.hpp>
-#include <openssl/md5.h>
 
 WardenWin::WardenWin() : Warden(), _serverTicks(0) {}
 
@@ -67,10 +70,12 @@ ClientWardenModule* WardenWin::GetModuleForClient()
     memcpy(mod->Key, Module.ModuleKey, 16);
 
     // md5 hash
-    MD5_CTX ctx;
-    MD5_Init(&ctx);
-    MD5_Update(&ctx, mod->CompressedData, length);
-    MD5_Final((uint8*)&mod->Id, &ctx);
+    auto md5 = Cryptography::Digest::MD5(
+        reinterpret_cast<std::uint8_t const*>(mod->CompressedData),
+        static_cast<std::size_t>(length));
+
+    static_assert(sizeof(mod->Id) == 16, "Warden module Id must be 16 bytes");
+    std::memcpy(&mod->Id, md5.data(), md5.size());
 
     return mod;
 }

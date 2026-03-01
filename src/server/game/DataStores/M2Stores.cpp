@@ -1,3 +1,4 @@
+#include <cstring>
 /**
  * This file is part of the MobiusCore project.
  * See AUTHORS file for copyright information.
@@ -222,7 +223,7 @@ GAME_API void LoadM2Cameras(std::string const& dataPath)
         bool fileValid = true;
         uint32 m2start = 0;
         char const* ptr = buffer.data();
-        while (m2start + 4 < buffer.size() && *reinterpret_cast<uint32 const*>(ptr) != '02DM')
+        while (m2start + 4 < buffer.size() && std::memcmp(ptr, "MD20", 4) != 0)
         {
             ++m2start;
             ++ptr;

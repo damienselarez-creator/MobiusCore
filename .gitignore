@@ -25,3 +25,4 @@ cmake-build-*/
 
 # Local backups
 /_backups/
+dep/CascLib/listfile/listfile.txt
